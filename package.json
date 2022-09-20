@@ -1,17 +1,18 @@
 {
-  "name": "module-13-challenge-orm",
+  "name": "module-13-financial-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A challenge to build the back end for an e-commerce site",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "watch": "nodemon server.js",
-    "seed": "node seeds/index.js"
+    "seed": "node seeds/index.js",
+    "dev": "nodemon -e js,ejs,css,html server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@work.github.com:coding-boot-camp/module-13-challenge-orm.git"
+    "url": "https://github.com/Lawhornmatt/FinanceBackend"
   },
   "keywords": [],
   "author": "",
