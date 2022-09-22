@@ -43,11 +43,17 @@ router.get('/tryme', async (req, res) => {
   try {
     const productData = await Product.findAll({
       attributes: ['product_name', 'price', 'stock'],
-      include: [{model: Category,
-        attributes: ['category_name']},
-        {
-          model: Tag, through: ProductTag,
-        }]
+      include: [
+        { model: Category,
+          attributes: ['category_name']
+        },
+        { model: Tag, 
+          attributes: ['tag_name'],
+          through: { ProductTag,
+            attributes: []
+          },
+        }
+      ]
 
     });
     res.status(200).json(productData);
