@@ -4,42 +4,8 @@ const { Product, Category, ProductTag, Tag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// get all products
+// get all products (with only useful info, extra is left out)
 router.get('/', async (req, res) => {
-  try {
-    const productData = await Product.findAll({
-      include: [{ model: Category }],
-    });
-    res.status(200).json(productData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//{ model: Category }, 
-router.get('/test', async (req, res) => {
-  try {
-    const productData = await Product.findAll({
-      include: [{ model: ProductTag }, { model: Tag }],
-      attributes: {
-        include: [
-          [
-            sequelize.literal(
-              'SELECT p.product_name, t.tag_name FROM Product p INNER JOIN ProductTag pt ON p.product_id=pt.product_id INNER JOIN Tag t ON pt.tag_id=t.tag_id;'
-            ),
-            'extProducts',
-          ],
-        ],
-      },
-    });
-    res.status(200).json(productData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//{ model: Category }, 
-router.get('/tryme', async (req, res) => {
   try {
     const productData = await Product.findAll({
       attributes: ['product_name', 'price', 'stock'],
@@ -54,7 +20,25 @@ router.get('/tryme', async (req, res) => {
           },
         }
       ]
+    });
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
+// get all products AND all the associated data
+router.get('/alldata', async (req, res) => {
+  try {
+    const productData = await Product.findAll({
+      include: [
+        { model: Category
+        },
+        { model: Tag, 
+          through: { ProductTag
+          },
+        }
+      ]
     });
     res.status(200).json(productData);
   } catch (err) {
@@ -63,19 +47,41 @@ router.get('/tryme', async (req, res) => {
 });
 
 // get one product
-router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+router.get('/:id', async (req, res) => {
+  try {
+    const productData = await Product.findByPk(req.params.id, {
+      attributes: ['product_name', 'price', 'stock'],
+      include: [
+        { model: Category,
+          attributes: ['category_name']
+        },
+        { model: Tag, 
+          attributes: ['tag_name'],
+          through: { ProductTag,
+            attributes: []
+          },
+        }
+      ]
+    });
+    if (!productData) {
+      res.status(404).json({ message: 'Error: No product found with that id.' });
+      return;
+    }
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
+      "product_name": "Basketball",
+      "price": 200.00,
+      "stock": 3,
+      "category_id": 4,
+      "tagIds": [1, 2, 3, 4]
     }
   */
   Product.create(req.body)
@@ -93,7 +99,9 @@ router.post('/', (req, res) => {
       // if no product tags, just respond
       res.status(200).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((productTagIds) => {
+      res.status(200).json(productTagIds)
+    })
     .catch((err) => {
       console.log(err);
       res.status(400).json(err);
@@ -142,8 +150,21 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  try {
+    const productData = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    if (!productData) {
+      res.status(404).json({ message: 'Error: No product found with that id' });
+      return;
+    }
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;

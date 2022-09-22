@@ -6,12 +6,14 @@ class ProductTag extends Model {}
 
 ProductTag.init(
   {
-    // prod_tagger_id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   primaryKey: true,
-    //   autoIncrement: true,
-    // },
+    // Apparently, you DO need to specify the primary ID column for this table
+    // Im guessing because the other columns have ID in their header and this confuses sequelize
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
