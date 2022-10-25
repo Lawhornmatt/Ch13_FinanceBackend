@@ -3,22 +3,25 @@
 
 ## TABLE OF CONTENTS:
 
-* [Description](#DESCRIPTION)
+* [Description](#description)
 
-* [Installation guide](#INSTALLATION) 
+* [Installation guide](#installation) 
 
-* [Usage Info](#USAGEINFO) 
+* [Usage Info](#usage) 
 
-* [Contribution Guidelines](#CONTRIBUTIONGUIDELINES) 
+* [Contribution Guidelines](#contribution) 
 
-* [Testing Instructions](#TESTINSTRUCTIONS) 
+* [Testing Instructions](#testing) 
 
-* [Questions](#QUESTIONS)
+* [Questions](#questions)
 
-* [Credits](#CREDIT)
+* [Credits](#credit)
 
-* [License](#LICENSE)
+* [License](#license)
 
+
+<br>
+<a name="description"></a>
 
 ## DESCRIPTION:
 
@@ -26,25 +29,73 @@ This is the ReadMe for the Chapter Thirteen Bootcamp Challenge: Financial Backen
 
 A challenge to build the back end for an e-commerce site.
 
-*Give Long Description*
+This is a simple API whereby hitting end points users receive data on products and their associated tags and categories. The appropriate end points view items, create new items, modify existing items, and delete items. This demonstrates the four basic operations of persistent storage, CRUD: create, read, update, and delete.
 
-<img src='INSERT PATH TO SCREENSHOT HERE' alt='A screenshot of Financial Backend'/>
+[Watch a video demonstration of the app here](https://drive.google.com/file/d/1P462rrOMjAx2sCpSmfBAkpre4AVlzXnK/view)
+
+
+<br>
+<a name="installation"></a>
 
 ## INSTALLATION:
 
-Follow the link to domain name where the app is deployed. 
+Clone/fork this repo and run server.js in Node. I recommend opening up a tool such as Insomnia, like in the walkthrough, to test the endpoints yourself. 
 
-## USAGE INFO:
 
-*How to Use*
+<br>
+<a name="usage"></a>
 
-## CONTRIBUTION GUIDELINES:
+## USAGE:
+
+All endpoints begin with "localhost:3001/api/"
+
+### *Products*:
+
+use "...products/"
+
+**[GET]**  
+/           -- return all product data with extraneous data filtered out for easier readability  
+/alldata    -- return all product data without filtering  
+/:id        -- returns the data of a single product  
+**[POST]**  
+/           -- creates a new product based on the passed body which should be in JSON format, e.g.:  
+
+                    {
+                      "product_name": "Playstation",
+                      "price": 349.99,
+                      "stock": 7,
+			                "category_id": 4,
+			                "tagIds": [2, 3]
+                    }
+**[PUT]**  
+/:id        -- modifies whatever product has an ID matching the URL parameter  
+**[DELETE]**  
+/:id        -- deletes whatever product has an ID matching the URL parameter  
+
+### *Tags & Categories*:
+
+use "...tags/" & "...categories/", respectively.  
+Their endpoints are nearly identical to "...products/" except they return unfiltered data with GET "/" and thus there is no "/alldata" for them.
+
+
+<br>
+<a name="contribution"></a>
+
+## CONTRIBUTION:
 
 Sorry, this project is privately maintained.
 
-## TEST INSTRUCTIONS:
+
+<br>
+<a name="testing"></a>
+
+## TESTING:
 
 Thank you, but no testing is needed at this time.
+
+
+<br>
+<a name="questions"></a>
 
 ## QUESTIONS:
 
@@ -54,11 +105,19 @@ you can find my GitHub here: https://github.com/Lawhornmatt
 
 or email me here: placeholder@notreal.com
 
+
+<br>
+<a name="credit"></a>
+
 ## CREDIT:
 
 This project was made in 2022 by Matthew Lawhorn
 
 This is a solo-project.
+
+
+<br>
+<a name="license"></a>
 
 ## LICENSE:
 
